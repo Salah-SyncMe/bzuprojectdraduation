@@ -1,0 +1,78 @@
+name: bzushadengraduation
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  firebase_auth:
+  firebase_core:
+  fluttertoast: ^8.2.5
+  animated_splash_screen:
+  flutter_spinkit:
+  shared_preferences:
+  google_sign_in: ^5.2.1
+  firebase_storage:
+  cloud_firestore:
+  convex_bottom_bar:
+  cached_network_image:
+  image_picker:
+  shimmer:
+  firebase_messaging: ^14.9.1
+  awesome_notifications: ^0.9.3+1
+  validators:
+  regexpattern:
+  flutter_facebook_auth:
+  sms_autofill:
+  cloud_functions:
+  firebase_analytics:
+  firebase_crashlytics:
+  firebase_dynamic_links:
+  firebase_performance:
+  firebase_remote_config:
+  intl_phone_number_input:
+  internet_connection_checker:
+  connectivity_plus:
+  provider:
+  flutter_screenutil:
+  barcode_scanner:
+  flutter_svg: ^2.0.10+1
+  http:
+
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+
+
+  uses-material-design: true
+
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: fonts/Pacifico-Regular.ttf
+
+
+    - family: CrimsonText
+      fonts:
+        - asset: fonts/CrimsonText-Bold.ttf
+
+    - family: Agbalumo
+      fonts:
+        - asset: fonts/Agbalumo-Regular.ttf
+    - family: VarelaRound
+
+      fonts:
+        - asset: fonts/VarelaRound-Regular.ttf
+  assets:
+    - images/

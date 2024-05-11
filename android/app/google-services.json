@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "395900073577",
+    "project_id": "bzugraduation",
+    "storage_bucket": "bzugraduation.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395900073577:android:42b53745fed09da56a14f8",
+        "android_client_info": {
+          "package_name": "com.example.bzushadengraduation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2ULoznb0hiWzHrruxcLoYgz8dQ26_v1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
