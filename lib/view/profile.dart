@@ -31,41 +31,43 @@ class _ProfileState extends State<Profile> {
         id: "",
         email: ""));
     return Consumer<API>(
-      builder: (context, value, child) => StreamBuilder(
-        stream: value.getAllMyPosts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Padding(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.2),
-              child: const CustomErrorWidget(),
-            );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return ListView.builder(
-              itemCount: 5,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return const CardShimmer();
-              },
-            );
-          } else {
-            final d = snapshot.data?.docs;
-            list.addAll(d!.map((e) => Post.fromJson(e.data())).toList());
-
-            return ListView.builder(
+      builder: (context, value, child) => Expanded(
+        child: StreamBuilder(
+          stream: value.getAllMyPosts(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.2),
+                child: const CustomErrorWidget(),
+              );
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return ListView.builder(
+                itemCount: 5,
                 shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: list.length,
                 itemBuilder: (context, index) {
-                  return index == 0
-                      ? profile()
-                      : (list[index].images.isEmpty
-                          ? card(list[index])
-                          : cardWithPicture(
-                              list[index], list[index].images[0]));
-                });
-          }
-        },
+                  return const CardShimmer();
+                },
+              );
+            } else {
+              final d = snapshot.data?.docs;
+              list.addAll(d!.map((e) => Post.fromJson(e.data())).toList());
+
+              return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: list.length,
+                  itemBuilder: (context, index) {
+                    return index == 0
+                        ? profile()
+                        : (list[index].images.isEmpty
+                            ? card(list[index])
+                            : cardWithPicture(
+                                list[index], list[index].images[0]));
+                  });
+            }
+          },
+        ),
       ),
     );
   }

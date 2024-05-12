@@ -1,3 +1,4 @@
+import 'package:bzushadengraduation/view/my_page.dart';
 import 'package:bzushadengraduation/view/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     API api = context.watch<API>();
 
-    List<Widget> pages = const [Profile(), HomeShow(), Friends()];
+    List<Widget> pages = (api.isHavePage == true)
+        ? const [Profile(), HomeShow(), MyPage(), Friends()]
+        : const [Profile(), HomeShow(), Friends()];
 
     return PopScope(
       canPop: true,
@@ -104,17 +107,35 @@ class _HomeState extends State<Home> {
                 onTap: (value) {
                   _pageController.jumpToPage(value);
                 },
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.person_outline), label: "Profile"),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.home), label: "Home"),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.person_add_alt_outlined),
-                      label: "Friends"),
-                  // BottomNavigationBarItem(
-                  //     icon: Icon(Icons.menu), label: "Menu"),
-                ],
+                items: (api.isHavePage == true)
+                    ? const [
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline), label: "Profile"),
+
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.home), label: "Home"),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.contact_page_rounded),
+                            label: "Page"),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.person_add_alt_outlined),
+                            label: "Friends"),
+                        // BottomNavigationBarItem(
+                        //     icon: Icon(Icons.menu), label: "Menu"),
+                      ]
+                    : const [
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.person_outline), label: "Profile"),
+
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.home), label: "Home"),
+
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.person_add_alt_outlined),
+                            label: "Friends"),
+                        // BottomNavigationBarItem(
+                        //     icon: Icon(Icons.menu), label: "Menu"),
+                      ],
               ),
             ),
           ),
@@ -122,26 +143,60 @@ class _HomeState extends State<Home> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            title: index != 0
-                ? Text(
-                    api.me!.name.toString(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w500,
-                        height: 1,
-                        fontSize: 25,
-                        color: Colors.black,
-                        fontFamily: "Agbalumo"),
-                  )
-                : const Text("My Profile",
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        shadows: [
-                          Shadow(blurRadius: 10, color: Colors.lightBlue)
-                        ],
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                        fontFamily: "Agbalumo")),
+            title: (api.isHavePage == true)
+                ? (index != 0 && index != 2)
+                    ? Text(
+                        api.me!.name.toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            height: 1,
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontFamily: "Agbalumo"),
+                      )
+                    : (index == 0)
+                        ? const Text("My Profile",
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                shadows: [
+                                  Shadow(
+                                      blurRadius: 10, color: Colors.lightBlue)
+                                ],
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontFamily: "Agbalumo"))
+                        : const Text("My Page",
+                            style: TextStyle(
+                                decoration: TextDecoration.none,
+                                shadows: [
+                                  Shadow(
+                                      blurRadius: 10, color: Colors.lightBlue)
+                                ],
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontFamily: "Agbalumo"))
+                : (index != 0)
+                    ? Text(
+                        api.me!.name.toString(),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            height: 1,
+                            fontSize: 25,
+                            color: Colors.black,
+                            fontFamily: "Agbalumo"),
+                      )
+                    : const Text("My Profile",
+                        style: TextStyle(
+                            decoration: TextDecoration.none,
+                            shadows: [
+                              Shadow(blurRadius: 10, color: Colors.lightBlue)
+                            ],
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontFamily: "Agbalumo")),
             actions: [
               IconButton(
                 onPressed: () {

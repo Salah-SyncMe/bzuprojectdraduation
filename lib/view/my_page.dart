@@ -1,77 +1,71 @@
-import 'package:bzushadengraduation/view/create_page.dart';
-import 'package:bzushadengraduation/view/post.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import '../animation/animation.dart';
 import '../model/api.dart';
 import '../model/post.dart';
 import '../widgets/card_shimmer.dart';
+import '../widgets/card_widget_post_page.dart';
 import '../widgets/error_widget.dart';
-import 'create_post.dart';
+import 'create_post_page.dart';
 
-class HomeShow extends StatefulWidget {
-  const HomeShow({super.key});
+class MyPage extends StatefulWidget {
+  const MyPage({super.key});
 
   @override
-  State<HomeShow> createState() => _HomeShowState();
+  State<MyPage> createState() => _MyPageState();
 }
 
-class _HomeShowState extends State<HomeShow> {
+class _MyPageState extends State<MyPage> {
   List<Post> list = [];
   List<Post> list1 = [];
 
   int index1 = 1;
   int counter = 0;
   bool isUploading = false;
-
-//   API().getAllMyPosts();
-// API().getAllPostUsers();
-
   @override
   Widget build(BuildContext context) {
     API api = context.watch<API>();
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: (api.isHavePage == false)
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                          blurStyle: BlurStyle.outer,
-                          color: Colors.black,
-                          blurRadius: 20,
-                          spreadRadius: 0)
-                    ]),
-                child: FloatingActionButton(
-                    elevation: 2,
-                    backgroundColor: Colors.white,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(19),
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2)),
-                    onPressed: () async {
-                      Navigator.push(
-                          context, Animations(page: CreatePage(api: api)));
-                    },
-                    child: SvgPicture.asset('images/add-file.svg',
-                        width: 20.w,
-                        height: 20.w,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.blueAccent, BlendMode.srcIn))),
-              ),
-            )
-          : null,
       body: SafeArea(
         child: Column(
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(90),
+              child: CachedNetworkImage(
+                width: 55.w,
+                height: 55.w,
+                imageUrl: "${api.pageMe?.image}",
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Shimmer.fromColors(
+                  baseColor: Colors.grey[500]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: double.maxFinite,
+                    height: 10,
+                    color: Colors.white,
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Text(api.pageMe!.name.toString(),
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    height: 1,
+                    fontSize: 28.sp,
+                    color: Colors.black,
+                    fontFamily: "Agbalumo")),
+            SizedBox(
+              height: 5.h,
+            ),
             Container(
               width: double.maxFinite,
               margin: const EdgeInsets.only(left: 10, top: 10),
@@ -79,26 +73,6 @@ class _HomeShowState extends State<HomeShow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(90),
-                    child: CachedNetworkImage(
-                      width: 50.w,
-                      height: 50.w,
-                      imageUrl: "${api.me?.image}",
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Shimmer.fromColors(
-                        baseColor: Colors.grey[500]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          width: double.maxFinite,
-                          height: 10,
-                          color: Colors.white,
-                        ),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -107,7 +81,7 @@ class _HomeShowState extends State<HomeShow> {
                       keyboardType: TextInputType.none,
                       onTap: () {
                         Navigator.push(
-                            context, Animations(page: const CreatePost()));
+                            context, Animations(page: const CreatePostPage()));
                       },
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -145,7 +119,7 @@ class _HomeShowState extends State<HomeShow> {
             Consumer<API>(
               builder: (context, value, child) => Expanded(
                 child: StreamBuilder(
-                  stream: value.getAllMyPosts(),
+                  stream: value.getAllMyPostsPage(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Padding(
@@ -170,7 +144,7 @@ class _HomeShowState extends State<HomeShow> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: list.length,
                           itemBuilder: (context, index) {
-                            return CardWidget(post: list[index]);
+                            return CardPageWidget(post: list[index]);
                             //
                           });
                     }
