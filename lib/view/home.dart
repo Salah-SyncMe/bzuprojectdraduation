@@ -218,7 +218,7 @@ class _HomeState extends State<Home> {
                             TextButton(
                                 onPressed: () async {
                                   // await API.updateActiveStatus(false);
-
+                                  await api.exitData();
                                   Navigator.of(context)
                                       .pushReplacement(MaterialPageRoute(
                                     builder: (context) => const Login(),

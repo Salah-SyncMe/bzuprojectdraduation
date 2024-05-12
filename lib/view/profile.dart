@@ -31,7 +31,8 @@ class _ProfileState extends State<Profile> {
         id: "",
         email: ""));
     return Consumer<API>(
-      builder: (context, value, child) => Expanded(
+      builder: (context, value, child) => SizedBox(
+        width: MediaQuery.of(context).size.height*0.6,
         child: StreamBuilder(
           stream: value.getAllMyPosts(),
           builder: (context, snapshot) {

@@ -640,6 +640,16 @@ class API extends ChangeNotifier {
     }
   }
 
+  Future<void> exitData() async {
+     me=null;
+     pageMe=null;
+     state = false;
+     isHavePage = false;
+
+
+    notifyListeners();
+  }
+
 //
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers() {
     return firestore
@@ -672,4 +682,5 @@ class API extends ChangeNotifier {
     // print(list1.length);
     return list1;
   }
+
 }
