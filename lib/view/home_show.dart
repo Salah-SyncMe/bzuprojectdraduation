@@ -37,38 +37,34 @@ class _HomeShowState extends State<HomeShow> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: (api.isHavePage == false)
-          ? Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                          blurStyle: BlurStyle.outer,
-                          color: Colors.black,
-                          blurRadius: 20,
-                          spreadRadius: 0)
-                    ]),
-                child: FloatingActionButton(
-                    elevation: 2,
-                    backgroundColor: Colors.white,
-                    shape: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(19),
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2)),
-                    onPressed: () async {
-                      Navigator.push(
-                          context, Animations(page: CreatePage(api: api)));
-                    },
-                    child: SvgPicture.asset('images/add-file.svg',
-                        width: 20.w,
-                        height: 20.w,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.blueAccent, BlendMode.srcIn))),
-              ),
-            )
-          : null,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
+                BoxShadow(
+                    blurStyle: BlurStyle.outer,
+                    color: Colors.black,
+                    blurRadius: 20,
+                    spreadRadius: 0)
+              ]),
+          child: FloatingActionButton(
+              elevation: 2,
+              backgroundColor: Colors.white,
+              shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(19),
+                  borderSide: const BorderSide(color: Colors.black, width: 2)),
+              onPressed: () async {
+                Navigator.push(context, Animations(page: CreatePage(api: api)));
+              },
+              child: SvgPicture.asset('images/add-file.svg',
+                  width: 20.w,
+                  height: 20.w,
+                  colorFilter: const ColorFilter.mode(
+                      Colors.blueAccent, BlendMode.srcIn))),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [

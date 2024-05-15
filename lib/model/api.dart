@@ -115,12 +115,12 @@ class API extends ChangeNotifier {
     }
   }
 
-  Future<void> createPage(String name, File? file) async {
+  Future<void> createPage(String names, File? file) async {
     final time = DateTime.now().millisecondsSinceEpoch;
     try {
       final page = PageUser(
           image: me!.email.toString(),
-          name: name,
+          name: names.toString().toLowerCase().trim().toString(),
           adminName: me!.name.toString(),
           about: "I am using page to BZU",
           createdAt: time.toString(),
@@ -128,16 +128,18 @@ class API extends ChangeNotifier {
           lastActive: time.toString(),
           email: me!.email.toString(),
           pushToken: '');
-      pageMe = page;
+
+      printLog(page);
       await firestore
           .collection('users/${me!.email.toString()}/pages')
-          .doc('${me?.email.toString()}')
+          .doc(names.toLowerCase().trim().toString())
           .set(page.toJson());
-      await saveImagePage(file!, time.toString());
+      await saveImagePage(file!, time.toString(),
+          names.toString().toLowerCase().trim().toString());
 
       // await getFirebaseMessagesToken();
       // createMyUsers();
-      await createMyPostsToPage(time.toString());
+      await createMyPostsToPage(names.toLowerCase().trim().toString());
       await check(me!.email.toString());
       notifyListeners();
     } on Exception catch (e) {
@@ -173,6 +175,11 @@ class API extends ChangeNotifier {
 //         .set(post.toJson());
 //   }
 //
+  Future<void> setPageMe(PageUser? page) async {
+    pageMe = page;
+    notifyListeners();
+  }
+
   Future<void> createMyPosts() async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
     try {
@@ -196,12 +203,12 @@ class API extends ChangeNotifier {
     }
   }
 
-  Future<void> createMyPostsToPage(String times) async {
+  Future<void> createMyPostsToPage(String name) async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
     try {
       await firestore
           .collection('users/${me!.email.toString()}/pages')
-          .doc('${me?.email.toString()}')
+          .doc(name)
           .collection('posts')
           .doc(time)
           .set({
@@ -299,10 +306,14 @@ class API extends ChangeNotifier {
           .collection('users')
           .where('email', isEqualTo: email)
           .get();
+      var data1 = await firestore
+          .collection('users')
+          .where('password', isEqualTo: pass)
+          .get();
 
       printLog(data.docs.isEmpty);
 
-      if (data.docs.isNotEmpty) {
+      if (data.docs.isNotEmpty && data1.docs.isNotEmpty) {
         var info = await firestore.collection('users').doc(email).get();
         me = (ChatUser.fromJson(info.data() ?? {}));
 
@@ -375,6 +386,26 @@ class API extends ChangeNotifier {
     }
   }
 
+  Future<bool> checkPages(String name) async {
+    try {
+      printLog(name);
+
+      var data = await firestore
+          .collection('users/${me!.email.toString()}/pages')
+          .where('name', isEqualTo: name.toLowerCase().trim().toString())
+          .get();
+
+      if (data.docs.isEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      printLog("error: $e");
+      return false;
+    }
+  }
+
   String getConversationID(String id) => me!.email.hashCode <= id.hashCode
       ? '${me!.email}_$id'
       : '${id}_${me!.email}';
@@ -395,15 +426,14 @@ class API extends ChangeNotifier {
     // await API.sendMessage(chatUser, imageUrl, Type.image);
   }
 
-  Future<void> saveImagePage(File? file, String time) async {
+  Future<void> saveImagePage(File? file, String time, String name) async {
     try {
       final ext = file?.path.split('.').last;
       final ref = storage.ref().child('imagesPages/${me!.email}.$ext');
       await ref.putFile(file!, SettableMetadata(contentType: 'image/$ext'));
       final imageUrl = await ref.getDownloadURL();
-      DocumentReference docRef = firestore
-          .collection('users/${me!.email.toString()}/pages')
-          .doc(me!.email);
+      DocumentReference docRef =
+          firestore.collection('users/${me!.email.toString()}/pages').doc(name);
       docRef.update({"image": imageUrl});
       pageMe?.image = imageUrl;
       notifyListeners();
@@ -444,10 +474,11 @@ class API extends ChangeNotifier {
           name: pageMe!.name.toString(),
           email: pageMe!.email.toString(),
           text: text.toString());
-      final ref =
-          firestore.collection('users/${me?.email}/pages/${me?.email}/posts');
+      final ref = firestore
+          .collection('users/${me?.email}/pages/${pageMe?.name}/posts');
 
       await ref.doc(time).set(post.toJson());
+
       notifyListeners();
     } on Exception catch (e) {
       printLog("error: $e");
@@ -488,8 +519,8 @@ class API extends ChangeNotifier {
           name: pageMe!.name.toString(),
           email: pageMe!.email.toString(),
           text: text.toString());
-      final ref =
-          firestore.collection('users/${me!.email}/pages/${me!.email}/posts');
+      final ref = firestore
+          .collection('users/${me!.email}/pages/${pageMe?.name}/posts');
       await ref.doc(time).set(post.toJson());
       for (var i in images!) {
         await saveImagePostPage(File(i.path), time);
@@ -574,7 +605,7 @@ class API extends ChangeNotifier {
       final imageUrl = await ref.getDownloadURL();
       DocumentReference docRef = firestore
           .collection('users/${me?.email.toString()}/pages')
-          .doc(me!.email)
+          .doc(pageMe?.name)
           .collection('posts')
           .doc(time);
       docRef.update({
@@ -605,8 +636,16 @@ class API extends ChangeNotifier {
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllMyPostsPage() {
     printLog(me?.email);
     return firestore
-        .collection('users/${me?.email}/pages/${me?.email}/posts')
+        .collection('users/${me?.email}/pages/${pageMe?.name}/posts')
         .orderBy('Create_at', descending: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllPage() {
+    printLog(me?.email);
+    return firestore
+        .collection('users/${me?.email}/pages')
+        .orderBy('created_at', descending: true)
         .snapshots();
   }
 
@@ -631,7 +670,7 @@ class API extends ChangeNotifier {
 
   Future<void> deletePostPage(Post post) async {
     await firestore
-        .collection('users/${me?.email}/pages/${me?.email}/posts')
+        .collection('users/${me?.email}/pages/${pageMe?.name}/posts')
         .doc(post.createAt)
         .delete();
     // print(post.images.length);
@@ -641,11 +680,10 @@ class API extends ChangeNotifier {
   }
 
   Future<void> exitData() async {
-     me=null;
-     pageMe=null;
-     state = false;
-     isHavePage = false;
-
+    me = null;
+    pageMe = null;
+    state = false;
+    isHavePage = false;
 
     notifyListeners();
   }
@@ -682,5 +720,4 @@ class API extends ChangeNotifier {
     // print(list1.length);
     return list1;
   }
-
 }

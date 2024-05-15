@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../controller/page_controller.dart';
 import '../controller/provider_file.dart';
 import '../model/api.dart';
-import '../utilities/tools.dart';
+import '../widgets/flutter_toast.dart';
 
 class CreatePage extends StatefulWidget {
   final API api;
@@ -25,11 +25,9 @@ class _CreatePageState extends State<CreatePage> {
   bool isLoading = false;
   bool visible = true;
   String number = "";
-  String pathImage = "";
 
   @override
   void initState() {
-    pathImage = "";
     // context.watch<CustomFileImage>().file = File("");
     super.initState();
   }
@@ -422,13 +420,21 @@ class _CreatePageState extends State<CreatePage> {
 
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            printLog(pathImage);
+                                            //
+                                            if (await page.checkPage(context) ==
+                                                true) {
+                                              await page.createPage(context);
 
-                                            await page.createPage(context);
-
-                                            setState(() {
-                                              isLoading = false;
-                                            });
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                            } else {
+                                              setState(() {
+                                                flutterToast(
+                                                    'Error: the name page was added before');
+                                                isLoading = false;
+                                              });
+                                            }
                                           } else {
                                             setState(() {
                                               isLoading = false;

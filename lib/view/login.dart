@@ -120,7 +120,7 @@ class _LoginState extends State<Login> {
                                       .contains("@student.birzeit.edu") ==
                                   false)) {
                                 return 'Error: you should email end student.birzeit.edu';
-                              } else if ((value.toString().trim().isEmail) ==
+                              } else if ((value.toString().trim().isEmail()) ==
                                   false) {
                                 return ' The email is not correct';
                               }
@@ -310,9 +310,11 @@ class _LoginState extends State<Login> {
                                         isLoading = false;
                                       });
                                     } else {
-                                      isLoading = false;
-                                      flutterToast(
-                                          'Error: email or password not correct');
+                                      setState(() {
+                                        isLoading = false;
+                                        flutterToast(
+                                            'Error: email or password not correct');
+                                      });
                                     }
                                   } else {
                                     isLoading = false;

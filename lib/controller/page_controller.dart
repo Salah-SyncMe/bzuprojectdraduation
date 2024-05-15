@@ -10,8 +10,20 @@ class PageControllers extends ChangeNotifier {
   TextEditingController name = TextEditingController();
   File? pathImage;
 
+  Future<bool> checkPage(BuildContext context) async {
+    try {
+      return await context.read<API>().checkPages(name.text);
+    } catch (e) {
+      printLog(e);
+      Fluttertoast.showToast(msg: 'error : $e');
+
+      return false;
+    }
+  }
+
   Future<void> createPage(BuildContext context) async {
     printLog(name.text.toString());
+    printLog(pathImage);
 
     await Provider.of<API>(context, listen: false)
         .createPage(name.text, pathImage);

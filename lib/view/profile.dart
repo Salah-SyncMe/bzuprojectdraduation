@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
         email: ""));
     return Consumer<API>(
       builder: (context, value, child) => SizedBox(
-        width: MediaQuery.of(context).size.height*0.6,
+        width: MediaQuery.of(context).size.height * 0.6,
         child: StreamBuilder(
           stream: value.getAllMyPosts(),
           builder: (context, snapshot) {

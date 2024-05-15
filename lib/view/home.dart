@@ -1,4 +1,4 @@
-import 'package:bzushadengraduation/view/my_page.dart';
+import 'package:bzushadengraduation/view/page.dart';
 import 'package:bzushadengraduation/view/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class _HomeState extends State<Home> {
     API api = context.watch<API>();
 
     List<Widget> pages = (api.isHavePage == true)
-        ? const [Profile(), HomeShow(), MyPage(), Friends()]
+        ? const [Profile(), HomeShow(), CurrentPage(), Friends()]
         : const [Profile(), HomeShow(), Friends()];
 
     return PopScope(
@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 fontFamily: "Agbalumo"))
-                        : const Text("My Page",
+                        : const Text("My Pages",
                             style: TextStyle(
                                 decoration: TextDecoration.none,
                                 shadows: [
