@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -150,63 +149,6 @@ class _FriendsState extends State<Friends> {
                       },
                     ),
                   );
-
-                  //   Expanded(
-                  //     child: Container(
-                  //   child: data.when(
-                  //     data: (data) {
-                  //       final d = data.docs;
-                  //       list = d
-                  //               .map((e) => ChatUser.fromJson(e.data()))
-                  //               .toList() ;
-                  //
-                  //       if (list.isNotEmpty) {
-                  //         return ListView.builder(
-                  //           physics: const BouncingScrollPhysics(),
-                  //           itemCount: list.length,
-                  //           itemBuilder: (context, index) {
-                  //             // print(list.length.toString() +
-                  //             //     "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-                  //             return card(list[index], index);
-                  //           },
-                  //         );
-                  //       } else {
-                  //         return ListView.builder(
-                  //           //             // reverse: true,
-                  //           //             // padding: EdgeInsets.only(bottom: 20),
-                  //           //             // controller: scrollController,
-                  //           //             // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  //           //
-                  //           itemCount: 5,
-                  //
-                  //           itemBuilder: (context, index) {
-                  //             return cardShimmer();
-                  //           },
-                  //         );
-                  //       }
-                  //     },
-                  //     loading: () {
-                  //       // print(list.length);
-                  //       return ListView.builder(
-                  //         //             // reverse: true,
-                  //         //             // padding: EdgeInsets.only(bottom: 20),
-                  //         //             // controller: scrollController,
-                  //         //             // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  //         //
-                  //         itemCount: 5,
-                  //
-                  //         itemBuilder: (context, index) {
-                  //           return cardShimmer();
-                  //         },
-                  //       );
-                  //     },
-                  //     error: (error, stackTrace) {
-                  //       return const Center(
-                  //         child: Text("error"),
-                  //       );
-                  //     },
-                  //   ),
-                  // ));
                 },
               ),
             ],
@@ -217,8 +159,6 @@ class _FriendsState extends State<Friends> {
   }
 
   Widget card(ChatUser user, int values) {
-    API api = context.watch<API>();
-
     return SizedBox(
         child: Card(
       shape: const OutlineInputBorder(
@@ -252,28 +192,41 @@ class _FriendsState extends State<Friends> {
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
+            SizedBox(
+              width: 10.w,
+            ),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(user.name.toString(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontFamily: "Agbalumo")),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(user.email.toString(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15,
-                          color: Colors.black,
-                          fontFamily: "CrimsonText")),
                   SizedBox(
-                    height: 15.h,
+                    width: 155.w,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(user.name.toString(),
+                            maxLines: null,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20.sp,
+                                color: Colors.black,
+                                fontFamily: "Agbalumo")),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(user.email.toString(),
+                            maxLines: null,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 15.sp,
+                                color: Colors.black,
+                                fontFamily: "CrimsonText")),
+                        SizedBox(
+                          height: 15.h,
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -317,145 +270,145 @@ class _FriendsState extends State<Friends> {
                               ],
                             )),
                       ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          await api.addFriend(user.email).then((value) {
-                            if (!value) {
-                              Fluttertoast.showToast(
-                                  msg: 'User not join the app',
-                                  fontSize: 20,
-                                  toastLength: Toast.LENGTH_LONG);
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: 'Was Added successfully',
-                                  fontSize: 20,
-                                  toastLength: Toast.LENGTH_LONG);
-                            }
-                          });
-                          //show notification
-                          // await NotificationService.showNotification(title: user.name, body: user.email);
-
-                          //show notification with summary
-                          //  await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
-                          //  notificationLayout: NotificationLayout.Inbox);
-
-                          // Notification progress Bar
-                          // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
-                          //     notificationLayout: NotificationLayout.ProgressBar);
-
-                          //Notification Message Notification
-                          // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
-                          //     notificationLayout: NotificationLayout.Messaging);
-
-                          //Notification big image
-                          // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
-                          //     notificationLayout: NotificationLayout.BigPicture,bigPicture: user.image);
-
-                          //notification button
-                          // await NotificationService.showNotification(
-                          //
-                          //     title: user.name,
-                          //     body: user.email,
-                          //     summry: "Small summary",
-                          //     actionButtons: [
-                          //       NotificationActionButton(
-                          //           key: "Accept",
-                          //           label: "Add friend",
-                          //           color: Colors.blue,
-                          //           autoDismissible: true),
-                          //       NotificationActionButton(
-                          //           key: "DISMISS",
-                          //           label: "Dismiss",
-                          //           color: Colors.black54,
-                          //           autoDismissible: true),
-                          //     ]);
-
-                          // //show buttons with summary
-                          // await NotificationService.showNotification(
-                          //     summry: "Small summary",
-                          //         notificationLayout: NotificationLayout.Messaging,
-                          //     title: user.name,
-                          //     body: user.email,
-                          //     actionButtons: [
-                          //       NotificationActionButton(
-                          //           key: "Accept",
-                          //           label: "Add friend",
-                          //           color: Colors.blue,
-                          //           autoDismissible: true),
-                          //       NotificationActionButton(
-                          //           key: "DISMISS",
-                          //           label: "Dismiss",
-                          //           color: Colors.black54,
-                          //           autoDismissible: true),
-                          //     ]);
-
-                          //show notification Schadule waiting 5 seconds
-
-                          await api.sendNotification(user);
-                          // await NotificationService.showNotification(
-                          //     summry: "Small summary",
-                          //     notificationLayout:
-                          //         NotificationLayout.Default,
-                          //     title: user.name,
-                          //     body: user.email,
-                          //
-                          //
-                          //
-                          //     actionType: ActionType.KeepOnTop,
-                          //     imageProfile: user.image,
-                          //     actionButtons: [
-                          //       NotificationActionButton(
-                          //           key: "Accept",
-                          //           label: "Add friend",
-                          //           color: Colors.blue,
-                          //           autoDismissible: true),
-                          //       NotificationActionButton(
-                          //           key: "DISMISS",
-                          //           label: "Dismiss",
-                          //           color: Colors.black54,
-                          //           autoDismissible: true),
-                          //     ]);
-                        },
-                        child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black,
-                                      spreadRadius: 2,
-                                      blurRadius: 10,
-                                      blurStyle: BlurStyle.outer)
-                                ],
-                                // border: Border.all(color: Colors.black,width: 2),
-                                gradient: LinearGradient(colors: [
-                                  Colors.white,
-                                  Colors.white54,
-
-                                  // Colors.white38,
-                                ], transform: GradientRotation(90)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.person_remove_outlined,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "  Remove  ",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: "Agbalumo"),
-                                )
-                              ],
-                            )),
-                      ),
+                      // SizedBox(
+                      //   width: 10.w,
+                      // ),
+                      // InkWell(
+                      //   onTap: () async {
+                      //     await api.addFriend(user.email).then((value) {
+                      //       if (!value) {
+                      //         Fluttertoast.showToast(
+                      //             msg: 'User not join the app',
+                      //             fontSize: 20,
+                      //             toastLength: Toast.LENGTH_LONG);
+                      //       } else {
+                      //         Fluttertoast.showToast(
+                      //             msg: 'Was Added successfully',
+                      //             fontSize: 20,
+                      //             toastLength: Toast.LENGTH_LONG);
+                      //       }
+                      //     });
+                      //     //show notification
+                      //     // await NotificationService.showNotification(title: user.name, body: user.email);
+                      //
+                      //     //show notification with summary
+                      //     //  await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
+                      //     //  notificationLayout: NotificationLayout.Inbox);
+                      //
+                      //     // Notification progress Bar
+                      //     // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
+                      //     //     notificationLayout: NotificationLayout.ProgressBar);
+                      //
+                      //     //Notification Message Notification
+                      //     // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
+                      //     //     notificationLayout: NotificationLayout.Messaging);
+                      //
+                      //     //Notification big image
+                      //     // await NotificationService.showNotification(title: user.name, body: user.email,summry: "Small summary",
+                      //     //     notificationLayout: NotificationLayout.BigPicture,bigPicture: user.image);
+                      //
+                      //     //notification button
+                      //     // await NotificationService.showNotification(
+                      //     //
+                      //     //     title: user.name,
+                      //     //     body: user.email,
+                      //     //     summry: "Small summary",
+                      //     //     actionButtons: [
+                      //     //       NotificationActionButton(
+                      //     //           key: "Accept",
+                      //     //           label: "Add friend",
+                      //     //           color: Colors.blue,
+                      //     //           autoDismissible: true),
+                      //     //       NotificationActionButton(
+                      //     //           key: "DISMISS",
+                      //     //           label: "Dismiss",
+                      //     //           color: Colors.black54,
+                      //     //           autoDismissible: true),
+                      //     //     ]);
+                      //
+                      //     // //show buttons with summary
+                      //     // await NotificationService.showNotification(
+                      //     //     summry: "Small summary",
+                      //     //         notificationLayout: NotificationLayout.Messaging,
+                      //     //     title: user.name,
+                      //     //     body: user.email,
+                      //     //     actionButtons: [
+                      //     //       NotificationActionButton(
+                      //     //           key: "Accept",
+                      //     //           label: "Add friend",
+                      //     //           color: Colors.blue,
+                      //     //           autoDismissible: true),
+                      //     //       NotificationActionButton(
+                      //     //           key: "DISMISS",
+                      //     //           label: "Dismiss",
+                      //     //           color: Colors.black54,
+                      //     //           autoDismissible: true),
+                      //     //     ]);
+                      //
+                      //     //show notification Schadule waiting 5 seconds
+                      //
+                      //     await api.sendNotification(user);
+                      //     // await NotificationService.showNotification(
+                      //     //     summry: "Small summary",
+                      //     //     notificationLayout:
+                      //     //         NotificationLayout.Default,
+                      //     //     title: user.name,
+                      //     //     body: user.email,
+                      //     //
+                      //     //
+                      //     //
+                      //     //     actionType: ActionType.KeepOnTop,
+                      //     //     imageProfile: user.image,
+                      //     //     actionButtons: [
+                      //     //       NotificationActionButton(
+                      //     //           key: "Accept",
+                      //     //           label: "Add friend",
+                      //     //           color: Colors.blue,
+                      //     //           autoDismissible: true),
+                      //     //       NotificationActionButton(
+                      //     //           key: "DISMISS",
+                      //     //           label: "Dismiss",
+                      //     //           color: Colors.black54,
+                      //     //           autoDismissible: true),
+                      //     //     ]);
+                      //   },
+                      //   child: Container(
+                      //       padding: const EdgeInsets.all(10),
+                      //       decoration: const BoxDecoration(
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //                 color: Colors.black,
+                      //                 spreadRadius: 2,
+                      //                 blurRadius: 10,
+                      //                 blurStyle: BlurStyle.outer)
+                      //           ],
+                      //           // border: Border.all(color: Colors.black,width: 2),
+                      //           gradient: LinearGradient(colors: [
+                      //             Colors.white,
+                      //             Colors.white54,
+                      //
+                      //             // Colors.white38,
+                      //           ], transform: GradientRotation(90)),
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(20))),
+                      //       child: const Row(
+                      //         children: [
+                      //           Icon(
+                      //             Icons.person_remove_outlined,
+                      //             color: Colors.black,
+                      //           ),
+                      //           SizedBox(
+                      //             width: 10,
+                      //           ),
+                      //           Text(
+                      //             "  Remove  ",
+                      //             style: TextStyle(
+                      //                 color: Colors.black,
+                      //                 fontFamily: "Agbalumo"),
+                      //           )
+                      //         ],
+                      //       )),
+                      // ),
                     ],
                   )
                 ],

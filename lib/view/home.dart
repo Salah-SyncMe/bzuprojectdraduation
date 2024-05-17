@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../controller/home_controller.dart';
 import '../model/api.dart';
+import '../widgets/add_widget.dart';
 import 'home_show.dart';
 import 'friends.dart';
 import 'login.dart';
@@ -32,8 +33,8 @@ class _HomeState extends State<Home> {
     API api = context.watch<API>();
 
     List<Widget> pages = (api.isHavePage == true)
-        ? const [Profile(), HomeShow(), CurrentPage(), Friends()]
-        : const [Profile(), HomeShow(), Friends()];
+        ? const [Profile(), HomeShow(), CurrentPage(), Friends(), CustomAdd()]
+        : const [Profile(), HomeShow(), Friends(), CustomAdd()];
 
     return PopScope(
       canPop: true,
@@ -120,6 +121,8 @@ class _HomeState extends State<Home> {
                         BottomNavigationBarItem(
                             icon: Icon(Icons.person_add_alt_outlined),
                             label: "Friends"),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.pages), label: "Pages"),
                         // BottomNavigationBarItem(
                         //     icon: Icon(Icons.menu), label: "Menu"),
                       ]
@@ -133,6 +136,8 @@ class _HomeState extends State<Home> {
                         BottomNavigationBarItem(
                             icon: Icon(Icons.person_add_alt_outlined),
                             label: "Friends"),
+                        BottomNavigationBarItem(
+                            icon: Icon(Icons.pages), label: "Pages"),
                         // BottomNavigationBarItem(
                         //     icon: Icon(Icons.menu), label: "Menu"),
                       ],

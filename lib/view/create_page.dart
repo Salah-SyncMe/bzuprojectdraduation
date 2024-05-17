@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -199,7 +201,6 @@ class _CreatePageState extends State<CreatePage> {
                                                                   ],
                                                                 ),
                                                               ),
-                                                              actions: [],
                                                               title: const Text(
                                                                 "Choose the Picture",
                                                                 style: TextStyle(
@@ -319,7 +320,6 @@ class _CreatePageState extends State<CreatePage> {
                                                         ],
                                                       ),
                                                     ),
-                                                    actions: [],
                                                     title: const Text(
                                                       "Choose the Picture",
                                                       style: TextStyle(
@@ -425,6 +425,7 @@ class _CreatePageState extends State<CreatePage> {
                                                 true) {
                                               await page.createPage(context);
 
+                                              value.file = File('');
                                               setState(() {
                                                 isLoading = false;
                                               });

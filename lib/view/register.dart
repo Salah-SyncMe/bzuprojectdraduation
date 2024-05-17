@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bzushadengraduation/controller/provider_file.dart';
 import 'package:bzushadengraduation/utilities/tools.dart';
 import 'package:flutter/material.dart';
@@ -201,7 +203,6 @@ class _RegisterState extends State<Register>
                                                           ],
                                                         ),
                                                       ),
-                                                      actions: [],
                                                       title: const Text(
                                                         "Choose the Picture",
                                                         style: TextStyle(
@@ -303,7 +304,6 @@ class _RegisterState extends State<Register>
                                                 ],
                                               ),
                                             ),
-                                            actions: [],
                                             title: const Text(
                                               "Choose the Picture",
                                               style: TextStyle(
@@ -600,6 +600,7 @@ class _RegisterState extends State<Register>
 
                                       setState(() {
                                         isloading = false;
+                                        value.file = File('');
                                       });
                                     } else {
                                       Fluttertoast.showToast(
