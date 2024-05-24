@@ -1,13 +1,11 @@
 import 'dart:io';
-
 import 'package:bzushadengraduation/controller/provider_file.dart';
 import 'package:bzushadengraduation/utilities/tools.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
-import '../controller/registeration_controller.dart';
+import '../../controller/registeration_controller.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});

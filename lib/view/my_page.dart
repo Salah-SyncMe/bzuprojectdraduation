@@ -11,7 +11,7 @@ import '../widgets/card_shimmer.dart';
 import '../widgets/card_widget_post_page.dart';
 import '../widgets/error_widget.dart';
 import 'create_post_page.dart';
-import 'login.dart';
+import 'LoginAndRegister/login.dart';
 
 class MyPage extends StatefulWidget {
   const MyPage({super.key});

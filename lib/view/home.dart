@@ -1,13 +1,14 @@
-import 'package:bzushadengraduation/view/page.dart';
-import 'package:bzushadengraduation/view/profile.dart';
+import 'package:bzushadengraduation/view/add_page.dart';
+import 'package:bzushadengraduation/view/profile/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../controller/home_controller.dart';
 import '../model/api.dart';
 import '../widgets/add_widget.dart';
-import 'home_show.dart';
+import 'all_pages_show.dart';
+import 'Home/home_show.dart';
 import 'friends.dart';
-import 'login.dart';
+import 'LoginAndRegister/login.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -33,8 +34,15 @@ class _HomeState extends State<Home> {
     API api = context.watch<API>();
 
     List<Widget> pages = (api.isHavePage == true)
-        ? const [Profile(), HomeShow(), CurrentPage(), Friends(), CustomAdd()]
-        : const [Profile(), HomeShow(), Friends(), CustomAdd()];
+        ? const [
+            Profile(),
+            HomeShow(),
+            AllPages(),
+            CurrentPage(),
+            Friends(),
+            CustomAdd()
+          ]
+        : const [Profile(), HomeShow(), AllPages(), Friends(), CustomAdd()];
 
     return PopScope(
       canPop: true,
@@ -111,18 +119,20 @@ class _HomeState extends State<Home> {
                 items: (api.isHavePage == true)
                     ? const [
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.person_outline), label: "Profile"),
+                            icon: Icon(Icons.person), label: "Profile"),
 
                         BottomNavigationBarItem(
                             icon: Icon(Icons.home), label: "Home"),
                         BottomNavigationBarItem(
+                            icon: Icon(Icons.pages), label: "Pages"),
+                        BottomNavigationBarItem(
                             icon: Icon(Icons.contact_page_rounded),
                             label: "Page"),
+
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.person_add_alt_outlined),
-                            label: "Friends"),
+                            icon: Icon(Icons.person_add), label: "Friends"),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.pages), label: "Pages"),
+                            icon: Icon(Icons.pageview), label: "Add Pages"),
                         // BottomNavigationBarItem(
                         //     icon: Icon(Icons.menu), label: "Menu"),
                       ]
@@ -134,10 +144,12 @@ class _HomeState extends State<Home> {
                             icon: Icon(Icons.home), label: "Home"),
 
                         BottomNavigationBarItem(
+                            icon: Icon(Icons.pages), label: "Pages"),
+                        BottomNavigationBarItem(
                             icon: Icon(Icons.person_add_alt_outlined),
                             label: "Friends"),
                         BottomNavigationBarItem(
-                            icon: Icon(Icons.pages), label: "Pages"),
+                            icon: Icon(Icons.pageview), label: "Add Pages"),
                         // BottomNavigationBarItem(
                         //     icon: Icon(Icons.menu), label: "Menu"),
                       ],
@@ -149,7 +161,7 @@ class _HomeState extends State<Home> {
             elevation: 0,
             centerTitle: true,
             title: (api.isHavePage == true)
-                ? (index != 0 && index != 2)
+                ? (index != 0 && index != 3 && index != 2)
                     ? Text(
                         api.me!.name.toString(),
                         style: const TextStyle(
@@ -160,28 +172,10 @@ class _HomeState extends State<Home> {
                             fontFamily: "Agbalumo"),
                       )
                     : (index == 0)
-                        ? const Text("My Profile",
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                shadows: [
-                                  Shadow(
-                                      blurRadius: 10, color: Colors.lightBlue)
-                                ],
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontFamily: "Agbalumo"))
-                        : const Text("My Pages",
-                            style: TextStyle(
-                                decoration: TextDecoration.none,
-                                shadows: [
-                                  Shadow(
-                                      blurRadius: 10, color: Colors.lightBlue)
-                                ],
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontFamily: "Agbalumo"))
+                        ? text("My Profile")
+                        : (index == 2)
+                            ? text("Pages")
+                            : text("My Pages")
                 : (index != 0)
                     ? Text(
                         api.me!.name.toString(),
@@ -192,16 +186,7 @@ class _HomeState extends State<Home> {
                             color: Colors.black,
                             fontFamily: "Agbalumo"),
                       )
-                    : const Text("My Profile",
-                        style: TextStyle(
-                            decoration: TextDecoration.none,
-                            shadows: [
-                              Shadow(blurRadius: 10, color: Colors.lightBlue)
-                            ],
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontFamily: "Agbalumo")),
+                    : text("My Profile"),
             actions: [
               IconButton(
                 onPressed: () {
@@ -264,5 +249,16 @@ class _HomeState extends State<Home> {
   void changePage(int index, Function(BuildContext context) onFinish) {
     _pageController.jumpToPage(index);
     onFinish(context);
+  }
+
+  Widget text(String title) {
+    return Text(title,
+        style: const TextStyle(
+            decoration: TextDecoration.none,
+            shadows: [Shadow(blurRadius: 10, color: Colors.lightBlue)],
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontFamily: "Agbalumo"));
   }
 }

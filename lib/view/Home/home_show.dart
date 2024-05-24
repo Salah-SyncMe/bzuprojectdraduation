@@ -1,17 +1,18 @@
 import 'package:bzushadengraduation/view/create_page.dart';
-import 'package:bzushadengraduation/view/post.dart';
+import 'package:bzushadengraduation/widgets/card_post.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import '../animation/animation.dart';
-import '../model/api.dart';
-import '../model/post.dart';
-import '../widgets/card_shimmer.dart';
-import '../widgets/error_widget.dart';
-import 'create_post.dart';
+import '../../animation/animation.dart';
+import '../../model/api.dart';
+import '../../model/post.dart';
+import '../../widgets/card_post_with_picture.dart';
+import '../../widgets/card_shimmer.dart';
+import '../../widgets/error_widget.dart';
+import '../create_post.dart';
 
 class HomeShow extends StatefulWidget {
   const HomeShow({super.key});
@@ -141,7 +142,7 @@ class _HomeShowState extends State<HomeShow> {
             Consumer<API>(
               builder: (context, value, child) => Expanded(
                 child: StreamBuilder(
-                  stream: value.getAllMyPosts(),
+                  stream: value.getPagesAllMeAndPostsPagesAndPostUser(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Padding(
@@ -159,16 +160,45 @@ class _HomeShowState extends State<HomeShow> {
                         },
                       );
                     } else {
-                      final d = snapshot.data?.docs;
-                      list = d!.map((e) => Post.fromJson(e.data())).toList();
-                      return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: list.length,
-                          itemBuilder: (context, index) {
-                            return CardWidget(post: list[index]);
-                            //
-                          });
+                      final d = snapshot.data;
+                      list = d!.map((e) => Post.fromJson(e)).toList();
+                      list.sort(
+                        (a, b) => b.createAt.compareTo(a.createAt),
+                      );
+                      return list.isEmpty
+                          ? Center(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    top: MediaQuery.of(context).size.height *
+                                        0.20.h),
+                                child: Center(
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "No have any Post",
+                                        style: TextStyle(
+                                            fontSize: 30.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                            fontFamily: "Agbalumo"),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: list.length,
+                              itemBuilder: (context, index) {
+                                return (list[index].images.isEmpty
+                                    ? CardPost(post: list[index])
+                                    : CardPostWithPicture(
+                                        post: list[index],
+                                        image: list[index].images[0]));
+                                //
+                              });
                     }
                   },
                 ),
@@ -178,14 +208,5 @@ class _HomeShowState extends State<HomeShow> {
         ),
       ),
     );
-  }
-
-  styleItems() {
-    return const TextStyle(
-        fontWeight: FontWeight.w500,
-        height: 1,
-        fontSize: 20,
-        color: Colors.black,
-        fontFamily: "VarelaRound");
   }
 }

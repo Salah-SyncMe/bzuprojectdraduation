@@ -138,13 +138,37 @@ class _FriendsState extends State<Friends> {
                           list = d!
                               .map((e) => ChatUser.fromJson(e.data()))
                               .toList();
-                          return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: list.length,
-                              itemBuilder: (context, index) {
-                                return card(list[index], index);
-                              });
+                          return d.isEmpty
+                              ? Center(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top:
+                                            MediaQuery.of(context).size.height *
+                                                0.20.h),
+                                    child: Center(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "No have any Friends",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 30.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                                fontFamily: "Agbalumo"),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: list.length,
+                                  itemBuilder: (context, index) {
+                                    return card(list[index], index);
+                                  });
                         }
                       },
                     ),

@@ -5,3 +5,5 @@ void printLog(msg) {
     print("BZU: $msg");
   }
 }
+
+enum PostType { friend, page, user }

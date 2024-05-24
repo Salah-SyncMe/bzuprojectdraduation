@@ -1,17 +1,18 @@
 class ChatUser {
-  ChatUser({
-    required this.image,
-    required this.name,
-    required this.about,
-    required this.createdAt,
-    required this.isOnline,
-    required this.id,
-    required this.lastActive,
-    required this.email,
-    required this.pushToken,
-    required this.password,
-  });
+  ChatUser(
+      {required this.image,
+      required this.name,
+      required this.about,
+      required this.createdAt,
+      required this.isOnline,
+      required this.id,
+      required this.lastActive,
+      required this.email,
+      required this.pushToken,
+      required this.password,
+      required this.subImage});
   late String image;
+  late String subImage;
   late String name;
   late String about;
   late String createdAt;
@@ -24,6 +25,7 @@ class ChatUser {
 
   ChatUser.fromJson(Map<String, dynamic> json) {
     image = json['image'] ?? '';
+    subImage = json['sub_image'] ?? '';
     name = json['name'] ?? '';
     about = json['about'] ?? '';
     createdAt = json['created_at'] ?? '';
@@ -38,6 +40,7 @@ class ChatUser {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['image'] = image;
+    data['sub_image'] = subImage;
     data['name'] = name;
     data['about'] = about;
     data['created_at'] = createdAt;

@@ -21,6 +21,7 @@ class _CurrentPageState extends State<CurrentPage> {
   int index1 = 1;
   int counter = 0;
   bool isUploading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

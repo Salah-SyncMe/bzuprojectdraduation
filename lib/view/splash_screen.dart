@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'login.dart';
+import 'LoginAndRegister/login.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

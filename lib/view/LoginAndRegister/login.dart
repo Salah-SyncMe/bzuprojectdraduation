@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bzushadengraduation/controller/login_controller.dart';
-import 'package:bzushadengraduation/view/register.dart';
+import 'package:bzushadengraduation/view/LoginAndRegister/register.dart';
 import 'package:bzushadengraduation/widgets/flutter_toast.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 import 'package:regexpattern/regexpattern.dart';
-import '../animation/animation.dart';
-import 'home.dart';
+import '../../animation/animation.dart';
+import '../home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

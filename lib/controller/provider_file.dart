@@ -6,8 +6,9 @@ import '../model/post.dart';
 class CustomFileImage extends ChangeNotifier {
   late File file = File("");
   List<Post> h = [];
-
+  bool isLoad = false;
   var imagePicker = ImagePicker();
+
   changeFileGalary() async {
     var imagePicked = await imagePicker.pickImage(source: ImageSource.gallery);
     if (imagePicked != null) {
@@ -17,6 +18,12 @@ class CustomFileImage extends ChangeNotifier {
     } else {
       // print("null");
     }
+    notifyListeners();
+  }
+
+  isLoader(bool isLoading) {
+    isLoad = isLoading;
+    // notifyListeners();
   }
 
   changelist(List<Post> list) {
@@ -30,6 +37,7 @@ class CustomFileImage extends ChangeNotifier {
       // var random = Random().nextInt(10000000);
       // var rand = "$random${imagepicked.name}";
     } else {}
+    notifyListeners();
   }
 
   File file2() {

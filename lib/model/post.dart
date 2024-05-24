@@ -1,13 +1,14 @@
 class Post {
-  Post({
-    required this.images,
-    required this.imageUrl,
-    required this.name,
-    required this.createAt,
-    required this.text,
-    required this.id,
-    required this.email,
-  });
+  Post(
+      {required this.type,
+      required this.images,
+      required this.imageUrl,
+      required this.name,
+      required this.createAt,
+      required this.text,
+      required this.id,
+      required this.email,
+      required this.adminName});
   late final List<String> images;
   late final String imageUrl;
   late final String name;
@@ -15,23 +16,29 @@ class Post {
   late final String text;
   late final String id;
   late final String email;
+  late final String adminName;
+  late final String type;
 
   Post.fromJson(Map<String, dynamic> json) {
     images = List.castFrom<dynamic, String>(json['images']);
     imageUrl = json['imageUrl'] ?? '';
     name = json['name'] ?? '';
-    createAt = json['Create_at'] ?? '';
+    adminName = json['admin_name'] ?? '';
+    createAt = json['created_at'] ?? '';
     text = json['text'] ?? '';
     id = json['id'] ?? '';
     email = json['email'] ?? '';
+    type = json['type'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['images'] = images;
+    data['type'] = type;
+    data['admin_name'] = adminName;
     data['imageUrl'] = imageUrl;
     data['name'] = name;
-    data['Create_at'] = createAt;
+    data['created_at'] = createAt;
     data['text'] = text;
     data['id'] = id;
     data['email'] = email;
